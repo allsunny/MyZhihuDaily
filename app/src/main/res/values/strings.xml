@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">知乎简报</string>
+    <string name="first_page">首页</string>
+    <string name="action_about">关于</string>
+    <string name="action_dark_mode_dark">夜间模式</string>
+    <string name="action_dark_mode_light">日间模式</string>
+    <string name="action_news_comment_default">...</string>
+    <string name="action_news_like_default">...</string>
+    <string name="action_notification">消息</string>
+    <string name="action_settings">设置</string>
+    <string name="action_sharing_compose_done">发布</string>
+    <string name="action_user_edit">编辑</string>
+    <string name="action_user_save">保存</string>
+</resources>
