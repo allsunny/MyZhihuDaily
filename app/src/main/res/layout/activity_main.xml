@@ -9,12 +9,12 @@
     <include layout="@layout/toolbar" />
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_widget"
+        android:id="@+id/srl_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@android:id/list"
+            android:id="@+id/rcv_news_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:cacheColorHint="@null"

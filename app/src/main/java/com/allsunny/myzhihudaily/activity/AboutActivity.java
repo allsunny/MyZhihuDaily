@@ -6,7 +6,7 @@ import android.support.v7.app.ActionBar;
 import com.allsunny.myzhihudaily.R;
 
 /**
- * Created by huangh on 2016/12/1.
+ * Created by allsunny on 2016/12/1.
  */
 
 public class AboutActivity extends BaseActivity {

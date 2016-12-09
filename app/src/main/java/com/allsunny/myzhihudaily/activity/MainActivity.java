@@ -2,23 +2,40 @@ package com.allsunny.myzhihudaily.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.allsunny.myzhihudaily.R;
 
+import butterknife.BindView;
+
 public class MainActivity extends BaseActivity {
+
+    @BindView(R.id.rcv_news_list)
+    RecyclerView mRcvNewsList;
+    @BindView(R.id.srl_refresh)
+    SwipeRefreshLayout mSrlRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         layoutResID = R.layout.activity_main;
         super.onCreate(savedInstanceState);
         initView();
+        configRecyclerView();
     }
 
     private void initView() {
         getSupportActionBar().setTitle("首页");//设置主标题
+    }
+
+    private void configRecyclerView() {
+
+
     }
 
     @Override
