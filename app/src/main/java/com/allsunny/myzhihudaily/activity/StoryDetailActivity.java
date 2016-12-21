@@ -9,7 +9,7 @@ import com.allsunny.myzhihudaily.R;
  * Created by allsunny on 2016/11/29.
  */
 
-public class NewsActivity extends BaseActivity {
+public class StoryDetailActivity extends BaseActivity {
 
     private String news = "<div class=\"main-wrap content-wrap\">\n" +
             "    <div class=\"headline\">\n" +
@@ -98,7 +98,7 @@ public class NewsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        layoutResID = R.layout.activity_news;
+        layoutResID = R.layout.activity_story_detail;
         super.onCreate(savedInstanceState);
 
         mWebView = (WebView) findViewById(R.id.web_view);

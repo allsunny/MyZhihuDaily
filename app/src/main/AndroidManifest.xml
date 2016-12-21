@@ -25,7 +25,7 @@
         <activity android:name=".activity.BaseActivity" />
 
         <activity
-            android:name=".activity.NewsActivity"
+            android:name=".activity.StoryDetailActivity"
             android:screenOrientation="portrait" />
 
         <activity
