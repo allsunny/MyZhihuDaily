@@ -3,31 +3,37 @@ package com.allsunny.myzhihudaily.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.allsunny.myzhihudaily.R;
-import com.allsunny.myzhihudaily.bean.Story;
+import com.allsunny.myzhihudaily.adapter.StoriesListAdapter;
 import com.allsunny.myzhihudaily.bean.StoriesList;
+import com.allsunny.myzhihudaily.bean.Story;
+import com.allsunny.myzhihudaily.bean.TopStory;
 import com.allsunny.myzhihudaily.http.RetrofitClient;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
 
-    private List<Story> mStorise;
+    private List<Story> mStoriesList = new ArrayList<>();
+    private List<TopStory> mTopStoryList = new ArrayList<>();
+    private StoriesListAdapter mStoryAdapter;
 
-    @BindView(R.id.rcv_news_list)
-    RecyclerView mRcvNewsList;
-    @BindView(R.id.srl_refresh)
-    SwipeRefreshLayout mSrlRefresh;
+    //   @BindView(R.id.rcv_story_list)
+    private RecyclerView mRcvStoryList;
+/*    @BindView(R.id.srl_refresh)
+    SwipeRefreshLayout mSrlRefresh;*/
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +45,16 @@ public class MainActivity extends BaseActivity {
 
     private void initView() {
         getSupportActionBar().setTitle("首页");//设置主标题
+        mRcvStoryList = (RecyclerView) findViewById(R.id.rcv_story_list);
     }
 
     private void configRecyclerView() {
+
+    //    mStoryAdapter = new StoriesListAdapter(this, mStoriesList);
+        mRcvStoryList.setLayoutManager(new LinearLayoutManager(this));
+    //    mRcvStoryList.setAdapter(mStoryAdapter);
         getStoriesList();
+
 
     }
 
@@ -51,14 +63,23 @@ public class MainActivity extends BaseActivity {
         Call<StoriesList> call = apiStores.getStoriesList();
         call.enqueue(new Callback<StoriesList>() {
             @Override
-            public void onResponse(Call<StoriesList> call, Response<StoriesList> response) {
-                mStorise = response.body().getStories();
-                Log.e("wtf", "Story=" + response.body().getStories().get(0).getTitle());
+            public void onResponse(Call<StoriesList> call, final Response<StoriesList> response) {
+                if (response != null) {
+                    mStoriesList.clear();
+                    mStoriesList.addAll(response.body().getStories());
+                    mTopStoryList.clear();
+                    mTopStoryList.addAll(response.body().getTop_stories());
+
+                    if (mStoryAdapter != null) {
+                        mStoryAdapter.updateData(mStoriesList);
+                    }
+                }
+                Log.e("wtf", "Story=" + mStoriesList.get(0).getTitle());
             }
 
             @Override
             public void onFailure(Call<StoriesList> call, Throwable t) {
-                Log.e("what","error");
+                Log.e("what", "error");
             }
 
         });

@@ -4,6 +4,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.allsunny.myzhihudaily.activity.MainActivity">
 
     <include layout="@layout/toolbar" />
@@ -14,7 +15,7 @@
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rcv_news_list"
+            android:id="@+id/rcv_story_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:cacheColorHint="@null"
