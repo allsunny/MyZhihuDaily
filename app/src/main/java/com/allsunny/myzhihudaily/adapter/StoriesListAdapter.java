@@ -32,14 +32,15 @@ public class StoriesListAdapter extends RecyclerView.Adapter<StoriesListAdapter.
     }
 
     public void updateData(List<Story> data) {
-        this.mStoryList = data;
+        this.mStoryList.clear();
+        this.mStoryList.addAll(data);
         this.notifyDataSetChanged();
     }
 
     @Override
     public StoriesListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = mInflater.inflate(R.layout.item_story, parent, false);
+        View view = mInflater.inflate(R.layout.item_test, parent, false);
         StoriesListHolder mViewHolder = new StoriesListHolder(view);
         return mViewHolder;
     }
@@ -47,8 +48,9 @@ public class StoriesListAdapter extends RecyclerView.Adapter<StoriesListAdapter.
     @Override
     public void onBindViewHolder(StoriesListHolder holder, int position) {
         //    holder.ivStory.setImageURI(mStoryList.get(position).getImages());
-        holder.tvTitle.setText(mStoryList.get(position).getTitle());
         Log.e("wtf", "item=" + mStoryList.get(position).getTitle());
+        holder.tvTitle.setText(mStoryList.get(position).getTitle());
+
 
     }
 

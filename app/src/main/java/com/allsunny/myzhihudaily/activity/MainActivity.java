@@ -25,14 +25,12 @@ import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
 
-    private List<Story> mStoriesList = new ArrayList<>();
-    private List<TopStory> mTopStoryList = new ArrayList<>();
+    public List<Story> mStoriesList = new ArrayList<>();
+    public List<TopStory> mTopStoryList = new ArrayList<>();
     private StoriesListAdapter mStoryAdapter;
 
-    //   @BindView(R.id.rcv_story_list)
     private RecyclerView mRcvStoryList;
-/*    @BindView(R.id.srl_refresh)
-    SwipeRefreshLayout mSrlRefresh;*/
+
 
 
     @Override
@@ -40,6 +38,7 @@ public class MainActivity extends BaseActivity {
         layoutResID = R.layout.activity_main;
         super.onCreate(savedInstanceState);
         initView();
+    //    getStoriesList();
         configRecyclerView();
     }
 
@@ -50,9 +49,9 @@ public class MainActivity extends BaseActivity {
 
     private void configRecyclerView() {
 
-    //    mStoryAdapter = new StoriesListAdapter(this, mStoriesList);
+        mStoryAdapter = new StoriesListAdapter(MainActivity.this, mStoriesList);
         mRcvStoryList.setLayoutManager(new LinearLayoutManager(this));
-    //    mRcvStoryList.setAdapter(mStoryAdapter);
+        mRcvStoryList.setAdapter(mStoryAdapter);
         getStoriesList();
 
 
@@ -69,12 +68,13 @@ public class MainActivity extends BaseActivity {
                     mStoriesList.addAll(response.body().getStories());
                     mTopStoryList.clear();
                     mTopStoryList.addAll(response.body().getTop_stories());
+                    Log.e("aaa", "mStoriesList=" + response.body().getStories().get(0).getTitle());
 
                     if (mStoryAdapter != null) {
                         mStoryAdapter.updateData(mStoriesList);
                     }
                 }
-                Log.e("wtf", "Story=" + mStoriesList.get(0).getTitle());
+                Log.e("wtf", "Story=" + response.body().getStories().get(0).getTitle());
             }
 
             @Override

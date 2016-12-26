@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/spacing_medium"
+    android:layout_toRightOf="@id/iv_story"
+    android:lineSpacingExtra="2dp"
+    android:maxLines="3"
+    android:padding="3dp"
+    android:text="nima"
+    android:textColor="?attr/textColorFirst"
+    android:textSize="18sp" />
+
