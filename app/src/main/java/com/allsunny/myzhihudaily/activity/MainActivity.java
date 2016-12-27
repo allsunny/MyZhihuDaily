@@ -25,12 +25,11 @@ import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
 
-    public List<Story> mStoriesList = new ArrayList<>();
-    public List<TopStory> mTopStoryList = new ArrayList<>();
+    private List<Story> mStoriesList = new ArrayList<>();
+    private List<TopStory> mTopStoryList = new ArrayList<>();
     private StoriesListAdapter mStoryAdapter;
 
     private RecyclerView mRcvStoryList;
-
 
 
     @Override
@@ -38,7 +37,6 @@ public class MainActivity extends BaseActivity {
         layoutResID = R.layout.activity_main;
         super.onCreate(savedInstanceState);
         initView();
-    //    getStoriesList();
         configRecyclerView();
     }
 
@@ -54,7 +52,6 @@ public class MainActivity extends BaseActivity {
         mRcvStoryList.setAdapter(mStoryAdapter);
         getStoriesList();
 
-
     }
 
     private void getStoriesList() {
@@ -68,13 +65,11 @@ public class MainActivity extends BaseActivity {
                     mStoriesList.addAll(response.body().getStories());
                     mTopStoryList.clear();
                     mTopStoryList.addAll(response.body().getTop_stories());
-                    Log.e("aaa", "mStoriesList=" + response.body().getStories().get(0).getTitle());
-
                     if (mStoryAdapter != null) {
-                        mStoryAdapter.updateData(mStoriesList);
+                        mStoryAdapter.notifyDataSetChanged();
                     }
                 }
-                Log.e("wtf", "Story=" + response.body().getStories().get(0).getTitle());
+
             }
 
             @Override
