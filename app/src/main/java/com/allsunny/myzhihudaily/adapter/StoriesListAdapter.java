@@ -20,6 +20,20 @@ import java.util.List;
 
 public class StoriesListAdapter extends RecyclerView.Adapter<StoriesListAdapter.StoriesListHolder> {
 
+    public interface OnItemClickListener
+    {
+        void onItemClick(View view, int position);
+        void onItemLongClick(View view , int position);
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener)
+    {
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
+
+
     private List<Story> mStoryList;
     private Context mContext;
     private LayoutInflater mInflater;
@@ -38,13 +52,30 @@ public class StoriesListAdapter extends RecyclerView.Adapter<StoriesListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(StoriesListHolder holder, int position) {
-
+    public void onBindViewHolder(final StoriesListHolder holder, final int position) {
         holder.tvTitle.setText(mStoryList.get(position).getTitle());
         Glide.with(mContext)
                 .load(mStoryList.get(position).getImages().get(0))
                 .placeholder(R.drawable.image_small_default)
                 .into(holder.ivStory);
+
+        if (mOnItemClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClick(holder.itemView, position);
+                }
+            });
+
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mOnItemClickListener.onItemLongClick(holder.itemView, position);
+                    return true;
+                }
+            });
+
+        }
     }
 
     @Override

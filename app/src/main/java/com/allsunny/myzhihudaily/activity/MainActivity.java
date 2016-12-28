@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.allsunny.myzhihudaily.R;
 import com.allsunny.myzhihudaily.adapter.StoriesListAdapter;
@@ -23,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements StoriesListAdapter.OnItemClickListener{
 
     private List<Story> mStoriesList = new ArrayList<>();
     private List<TopStory> mTopStoryList = new ArrayList<>();
@@ -48,6 +50,7 @@ public class MainActivity extends BaseActivity {
     private void configRecyclerView() {
 
         mStoryAdapter = new StoriesListAdapter(MainActivity.this, mStoriesList);
+        mStoryAdapter.setOnItemClickListener(this);
         mRcvStoryList.setLayoutManager(new LinearLayoutManager(this));
         mRcvStoryList.setAdapter(mStoryAdapter);
         getStoriesList();
@@ -74,7 +77,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<StoriesList> call, Throwable t) {
-                Log.e("what", "error");
+
             }
 
         });
@@ -102,4 +105,17 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Intent intent = new Intent(this, StoryDetailActivity.class);
+        intent.putExtra("ID", mStoriesList.get(position).getId());
+        startActivity(intent);
+
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position) {
+        Toast.makeText(this,"Long Item Click",Toast.LENGTH_SHORT).show();
+    }
 }
