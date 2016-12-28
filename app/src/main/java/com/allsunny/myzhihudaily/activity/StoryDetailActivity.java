@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.allsunny.myzhihudaily.R;
 import com.allsunny.myzhihudaily.bean.StoriesList;
 import com.allsunny.myzhihudaily.bean.StoryDetail;
 import com.allsunny.myzhihudaily.http.RetrofitClient;
+import com.bumptech.glide.Glide;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +32,13 @@ public class StoryDetailActivity extends BaseActivity {
     private String mStoryBody;
 
     private WebView mWebView;
+    private RelativeLayout mTopLayout;
+    private ImageView mIvStory;
+    private TextView mTvStoryTitle;
+    private TextView mTvStoryImageSource;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +50,13 @@ public class StoryDetailActivity extends BaseActivity {
     }
 
     private void initView() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         mWebView = (WebView) findViewById(R.id.web_view);
+        mTopLayout = (RelativeLayout) findViewById(R.id.story_top_layout);
+        mIvStory = (ImageView) findViewById(R.id.img_story);
+        mTvStoryTitle = (TextView) findViewById(R.id.tv_story_title);
+        mTvStoryImageSource = (TextView) findViewById(R.id.tv_story_image_source);
     }
 
     private void initData() {
@@ -61,6 +78,12 @@ public class StoryDetailActivity extends BaseActivity {
                 if (response != null) {
                     mStoryBody = STORY_FORMAT + response.body().getBody() + "</body></html>";
                     configView();
+                    mTvStoryTitle.setText(response.body().getTitle());
+                    mTvStoryImageSource.setText(response.body().getImage_source());
+                    Glide.with(StoryDetailActivity.this)
+                            .load(response.body().getImage())
+                            .placeholder(R.drawable.image_small_default)
+                            .into(mIvStory);
                 }
             }
 
