@@ -2,7 +2,12 @@ package com.allsunny.myzhihudaily.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,14 +30,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends BaseActivity implements StoriesListAdapter.OnItemClickListener{
+public class MainActivity extends BaseActivity
+        implements NavigationView.OnNavigationItemSelectedListener,
+        SwipeRefreshLayout.OnRefreshListener,
+        StoriesListAdapter.OnItemClickListener {
 
     private List<Story> mStoriesList = new ArrayList<>();
     private List<TopStory> mTopStoryList = new ArrayList<>();
     private StoriesListAdapter mStoryAdapter;
 
     private RecyclerView mRcvStoryList;
-
+    private DrawerLayout mDrawer;
+    private NavigationView mNavigationView;
+    private SwipeRefreshLayout mSrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +53,19 @@ public class MainActivity extends BaseActivity implements StoriesListAdapter.OnI
     }
 
     private void initView() {
-        getSupportActionBar().setTitle("首页");//设置主标题
+        mSrl = (SwipeRefreshLayout) findViewById(R.id.srl_refresh);
         mRcvStoryList = (RecyclerView) findViewById(R.id.rcv_story_list);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
     }
 
     private void configRecyclerView() {
+
+        getSupportActionBar().setTitle("首页");//设置主标题
+
+        // 刷新时，指示器旋转后变化的颜色
+     //   mSrl.setColorSchemeResources(R.color.darkred, R.color.darkred);
+        mSrl.setOnRefreshListener(this);
 
         mStoryAdapter = new StoriesListAdapter(MainActivity.this, mStoriesList);
         mStoryAdapter.setOnItemClickListener(this);
@@ -55,6 +73,14 @@ public class MainActivity extends BaseActivity implements StoriesListAdapter.OnI
         mRcvStoryList.setAdapter(mStoryAdapter);
         getStoriesList();
 
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawer, mToolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.addDrawerListener(toggle);  //设置drawer的开关监听
+        //该方法会自动和actionBar关联, 将开关的图片显示在了action上，如果不设置，也可以有抽屉的效果，不过是默认的图标
+        //ActionBarDrawerToggle与DrawerLayout的状态同步
+        toggle.syncState();
+
+        mNavigationView.setNavigationItemSelectedListener(this);
     }
 
     private void getStoriesList() {
@@ -92,9 +118,8 @@ public class MainActivity extends BaseActivity implements StoriesListAdapter.OnI
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_notification:
-                break;
             case R.id.action_dark_mode:
+                item.setIcon(R.drawable.menu_day);
                 break;
             case R.id.action_settings:
                 break;
@@ -116,6 +141,45 @@ public class MainActivity extends BaseActivity implements StoriesListAdapter.OnI
 
     @Override
     public void onItemLongClick(View view, int position) {
-        Toast.makeText(this,"Long Item Click",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Long Item Click", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        mDrawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onRefresh() {
+        getStoriesList();
+        mSrl.setRefreshing(false);
     }
 }
